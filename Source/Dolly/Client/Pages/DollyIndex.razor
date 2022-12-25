@@ -1,0 +1,62 @@
+﻿@page "/dalle"
+@using Dolly.Client.Models
+@inject BlazorSpinner.SpinnerService SpinnerService
+
+<h3>Dall E</h3>
+<h1 class="display-4">Dolly:</h1>
+<h4>Quick Self Api, No Code</h4>
+<br />
+
+<EditForm Model="@_dollyRequest.Input" OnValidSubmit="@RequestImage">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <label>Api Key:</label>
+    <InputText type="password" @bind-Value="ApiKey"></InputText>
+    <p>Sign up and get an API Key from <a href="https://openai.com/api/pricing/#faq-answers-pricing">Open AI</a>.</p>
+    <br />
+
+    <InputTextArea class="form-control" id="txt" style="width: 500px;" placeholder="Enter a Dall-E image promt." @bind-Value="_dollyRequest.Input.prompt"></InputTextArea>
+    <br />
+
+    <InputSelect @bind-Value="_dollyRequest.Input.n">
+        @for (var i = 1; i <= 10; i++)
+        {
+            <option>@i</option>
+        }
+    </InputSelect>
+
+    <InputSelect @bind-Value="_dollyRequest.Input.size">
+        @foreach (var size in _sizes)
+        {
+            <option>@size</option>
+        }
+    </InputSelect>
+
+    <button type="submit" id="btn">
+        Generate
+    </button>
+</EditForm>
+
+<DollyResults DollyRequest="_dollyRequest"/>
+
+@code {
+
+    private readonly string[] _sizes = { "256x256", "512x512", "1024x1024" };
+
+    private readonly DollyRequest _dollyRequest = new(new Input { n = 1, size = "256x256" });
+
+    public string? ApiKey { get; set; }
+
+    private async void RequestImage()
+    {
+        SpinnerService.Show();
+
+        var message = await _dollyRequest.RequestImage(ApiKey);
+        Console.Write(message);
+
+        StateHasChanged();
+
+        SpinnerService.Hide();
+    }
+}

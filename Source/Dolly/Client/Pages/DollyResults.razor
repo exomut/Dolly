@@ -1,0 +1,21 @@
+﻿@using Dolly.Client.Models
+<h3>DollyResults</h3>
+
+<div id="display" class="container-fluid">
+    @foreach (var result in DollyRequest.Results)
+    {
+        <div class="row">
+            <div class="col-md-4">
+                <a href="@result.Url" target="_blank">
+                    <img src="@result.Url" alt="Generated Dall-E Image" class="img-fluid px-1 py-3" />
+                </a>
+            </div>
+            <div class="col-md-8 align-self-center">@result.Prompt</div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public DollyRequest? DollyRequest { get; set; }
+}
