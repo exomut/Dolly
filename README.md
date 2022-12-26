@@ -15,7 +15,7 @@ Dolly does not include an API key allowing you to sign up for an OpenAI account 
 
 ## Git Hub Pages
 
-[Live Project]("https://exomut.github.io/Dolly")
+[Live Project](https://exomut.github.io/Dolly)
 
 ## Warning
 
